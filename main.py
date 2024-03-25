@@ -36,21 +36,22 @@ class Escritorio:
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
         self.barra_tareas.pack(side="bottom", fill="x")
 
-        # Botón para seleccionar fondo de pantalla
-        self.boton_fondo = ttk.Button(self.barra_tareas, text="Seleccionar Fondo", command=self.seleccionar_fondo,
-                                      style="Boton.TButton")
-        self.boton_fondo.pack(pady=5, padx=10, side="left")
-
-        self.titulo = ttk.Label(self.barra_tareas, text="Escritorio", style="Titulo.TLabel", background="#0078D7")
-        self.titulo.pack(pady=5, padx=10, side="left")
-
-        self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", command=root.quit, style="Boton.TButton")
-        self.boton_salir.pack(pady=5, padx=10, side="right")
-
         #Boton de inicio
         self.icono_inicio = ImageTk.PhotoImage(Image.open("imagenes/logo.png").resize((30, 30)))
         self.boton_inicio = ttk.Button(self.barra_tareas, image=self.icono_inicio, command=self.volver_inicio, style="Boton.TButton")
-        self.boton_inicio.pack(pady=5, padx=10, side="right")
+        self.boton_inicio.pack(pady=5, padx=10, side="left")
+
+        #Boton para seleccionar fondo de pantalla
+        self.icono_fondo = ImageTk.PhotoImage(Image.open("imagenes/icono_wall.png").resize((30, 30)))
+        self.boton_fondo = ttk.Button(self.barra_tareas, image=self.icono_fondo, command=self.seleccionar_fondo, style="Boton.TButton")
+        self.boton_fondo.pack(pady=5, padx=10, side="left")
+
+        #Boton para salir
+        self.icono_salir = ImageTk.PhotoImage(Image.open("imagenes/icono_salir.png").resize((30, 30)))
+        self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", image=self.icono_salir, command=root.quit, style="Boton.TButton")
+        self.boton_salir.pack(pady=5, padx=10, side="right")
+
+
 
         # Centrar la barra de tareas horizontalmente
         self.barra_tareas.place(relx=0.5, rely=1, anchor="s")
