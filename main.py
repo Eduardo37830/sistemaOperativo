@@ -10,7 +10,13 @@ class IniciarSesion:
     def __init__(self, root):
         self.root = root
         self.root.title("Inicio de Sesión")
-        self.root.geometry("300x200")
+        self.root.geometry("1280x720")
+
+        # Fondo de bienvenida
+        self.imagen_bienvenida = Image.open("imagenes/logo.png")
+        self.imagen_bienvenida = ImageTk.PhotoImage(self.imagen_bienvenida)
+        self.label_bienvenida = tk.Label(self.root, image=self.imagen_bienvenida)
+        self.label_bienvenida.pack(pady=(20, 0))
 
         # Etiqueta y campo de entrada para el nombre de usuario
         self.label_usuario = ttk.Label(self.root, text="Usuario:")
