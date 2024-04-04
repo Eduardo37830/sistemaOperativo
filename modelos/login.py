@@ -45,7 +45,7 @@ class IniciarSesion:
         if usuario == "admin" and contrasena == "admin":
             print("Inicio de sesión exitoso")
             self.root.destroy()  # Cerrar la ventana de inicio de sesión
-            # Aquí podrías abrir la ventana del escritorio después del inicio de sesión exitoso
+            # Aquí se abre la ventana del escritorio después del inicio de sesión exitoso
         else:
             print("Credenciales incorrectas")
 
