@@ -5,12 +5,14 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 from PIL import Image, ImageTk
+import datetime
 
 class IniciarSesion:
     def __init__(self, root):
         self.root = root
         self.root.title("Inicio de Sesión")
-        self.root.geometry("1280x720")
+        self.root.geometry("1920x1080")
+        self.root.state('zoomed')
 
         # Fondo de bienvenida
         self.imagen_bienvenida = Image.open("imagenes/logo.png")
@@ -57,7 +59,8 @@ class Escritorio:
     def __init__(self, root):
         self.root = root
         self.root.title("Escritorio")
-        self.root.geometry("1280x720")
+        self.root.geometry("1920x1080")
+        self.root.state('zoomed')
 
         # Estilos
         self.estilo = ttk.Style()
@@ -69,14 +72,14 @@ class Escritorio:
         self.area_trabajo.pack(expand=True, fill="both")
 
         # Configurar el fondo de pantalla inicial
-        self.fondo = Image.open("imagenes/Fondoprueba.png")
+        self.fondo = Image.open("imagenes/fondoRedimensionado.jpg")
         self.fondo = ImageTk.PhotoImage(self.fondo)
         self.label_fondo = tk.Label(self.area_trabajo, image=self.fondo)
         self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Barra de tareas
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
-        self.barra_tareas.pack(side="bottom", fill="x", padx=10, pady=(1000)) #padding
+        self.barra_tareas.pack(side="bottom", fill="x", padx=10, pady=(0, 10))
 
         # Botón de inicio con el ícono redimensionado
         self.icono_inicio = self.resize_image("imagenes/logo.png")
@@ -96,6 +99,11 @@ class Escritorio:
         # Centrar la barra de tareas horizontalmente
         self.barra_tareas.place(relx=0.5, rely=1, anchor="s")
 
+        # Fecha y hora
+        self.label_hora = tk.Label(self.barra_tareas, text="", fg="black", bg="white", pady=10)
+        self.label_hora.pack(side="right", padx=10)
+        self.actualizar_hora()
+
 
     def seleccionar_fondo(self):
         filename = filedialog.askopenfilename(filetypes=[("Archivos de imagen", "*.png;*.jpg;*.jpeg")])
@@ -107,11 +115,24 @@ class Escritorio:
 
     #Ir a la pantalla de inicio
     def volver_inicio(self):
-        # Aquí va la lógica para volver a la pantalla de inicio
-        print("Ir a la pantalla de inicio")
-
+        self.root.destroy()
+        root = tk.Tk()
+        root.config(bg="#EDEDED")
+        Escritorio(root)
+        root.mainloop()
+    #Cambiar el mataño de un ícono
     def resize_image(self, ruta):
         return ImageTk.PhotoImage(Image.open(ruta).resize((30, 30)))
+
+
+    #Cambiar la hora
+    def actualizar_hora(self):
+        # Formato de hora y fecha que deseas mostrar
+        formato = "%Y-%m-%d %H:%M:%S"
+        ahora = datetime.datetime.now().strftime(formato)
+        self.label_hora.config(text=ahora)
+        # Llama a esta función nuevamente después de 1000 ms (1 segundo)
+        self.root.after(1000, self.actualizar_hora)
 
 if __name__ == "__main__":
     root = tk.Tk()
