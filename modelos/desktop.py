@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 import datetime
+import psutil
 
 class Escritorio:
     def __init__(self, root):
@@ -57,6 +58,11 @@ class Escritorio:
         self.boton_calculadora = ttk.Button(self.barra_tareas, text="Calcular", image=self.icono_calculadora, command= self.abrir_calculadora, style="Boton.TButton")
         self.boton_calculadora.pack(pady=5, padx=10, side="right")
 
+        # Información del sistema
+        self.icono_info_sistema = self.resize_image("imagenes/interrogatorio.png")
+        self.boton_info_sistema = ttk.Button(self.barra_tareas, image=self.icono_info_sistema, command=self.mostrar_info_sistema, style="Boton.TButton")
+        self.boton_info_sistema.pack(pady=5, padx=10, side="left")
+
 
 
     def seleccionar_fondo(self):
@@ -94,3 +100,28 @@ class Escritorio:
         ventana_calculadora.title("Calculadora Científica")
         ventana_calculadora.geometry("400x600")  # Ajusta el tamaño según tus necesidades
         ttk.Label(ventana_calculadora, text="Calculadora Científica", font=("Segoe UI", 12)).pack(pady=10)
+
+    def mostrar_info_sistema(self):
+        # Información de la batería
+        if hasattr(psutil, "sensors_battery"):  # Verificar si el sistema soporta información de la batería
+            info_bateria = psutil.sensors_battery()
+            if info_bateria:
+                porcentaje_bateria = f"Batería: {info_bateria.percent}%"
+            else:
+                porcentaje_bateria = "Batería: No disponible"
+        else:
+            porcentaje_bateria = "Batería: No soportado"
+
+        # Uso de RAM
+        uso_ram = psutil.virtual_memory()
+        porcentaje_ram = f"RAM: {uso_ram.percent}% usado"
+
+        # Uso de CPU
+        porcentaje_cpu = f"CPU: {psutil.cpu_percent()}% usado"
+
+        #Uso de GPU
+        porcentaje_gpu = f"GPU: {psutil.cpu_percent(interval=1)}% usado"
+
+        # Mostrar la información
+        mensaje = f"{porcentaje_bateria}\n{porcentaje_ram}\n{porcentaje_cpu}\n{porcentaje_gpu}"
+        messagebox.showinfo("Información del Sistema", mensaje)
