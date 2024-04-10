@@ -5,6 +5,7 @@ import datetime
 import psutil
 
 from modelos.calculadora import CalculadoraCientifica
+from modelos.administradorArchivos import AdministradorArchivos
 
 class Escritorio:
     def __init__(self, root):
@@ -32,7 +33,7 @@ class Escritorio:
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
         self.barra_tareas.pack(side="bottom", fill="x", padx=10, pady=(0, 10))
 
-        # Botón de inicio con el ícono redimensionado
+        # Botón de inicio con el logo redimensionado
         self.icono_inicio = self.resize_image("imagenes/logo.png")
         self.boton_inicio = ttk.Button(self.barra_tareas, image=self.icono_inicio, command=self.volver_inicio, style="Boton.TButton")
         self.boton_inicio.pack(pady=5, padx=10, side="left")
@@ -41,6 +42,11 @@ class Escritorio:
         self.icono_fondo = self.resize_image("imagenes/icono_wall.png")
         self.boton_fondo = ttk.Button(self.barra_tareas, image=self.icono_fondo, command=self.seleccionar_fondo, style="Boton.TButton")
         self.boton_fondo.pack(pady=5, padx=10, side="left")
+
+        # Botón para administrar archivos
+        self.icono_carpeta = self.resize_image("imagenes/icono_carpeta.png")
+        self.boton_carpeta = ttk.Button(self.barra_tareas, image=self.icono_carpeta, command=self.abrir_administrador_archivos, style="Boton.TButton")
+        self.boton_carpeta.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
@@ -102,6 +108,12 @@ class Escritorio:
         # Instancia la calculadora científica pasando la nueva ventana como master
         calculadora = CalculadoraCientifica(ventana_calculadora)
 
+    def abrir_administrador_archivos(self):
+        # Crea una nueva ventana Toplevel para el administrador de archivos
+        ventana_administrador = tk.Toplevel(self.root)
+        # Instancia el administrador de archivos pasando la nueva ventana como master
+        administrador = AdministradorArchivos(ventana_administrador)
+
     def mostrar_info_sistema(self):
         # Información de la batería
         if hasattr(psutil, "sensors_battery"):  # Verificar si el sistema soporta información de la batería
@@ -121,7 +133,7 @@ class Escritorio:
         porcentaje_cpu = f"CPU: {psutil.cpu_percent()}% usado"
 
         #Uso de GPU
-        porcentaje_gpu = f"GPU: {psutil.cpu_percent(interval=1)}% usado"
+        porcentaje_gpu = f"GPU: {psutil.gpu_percent(interval=1)}% usado"
 
         # Mostrar la información
         mensaje = f"{porcentaje_bateria}\n{porcentaje_ram}\n{porcentaje_cpu}\n{porcentaje_gpu}"
