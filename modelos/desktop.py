@@ -4,6 +4,8 @@ from PIL import Image, ImageTk
 import datetime
 import psutil
 
+from modelos.calculadora import CalculadoraCientifica
+
 class Escritorio:
     def __init__(self, root):
         self.root = root
@@ -55,9 +57,9 @@ class Escritorio:
 
         # Calculadora científica
         self.icono_calculadora = self.resize_image("imagenes/icono_calculadora.png")
-        self.boton_calculadora = ttk.Button(self.barra_tareas, text="Calcular", image=self.icono_calculadora, command= self.abrir_calculadora, style="Boton.TButton")
+        self.boton_calculadora = ttk.Button(self.barra_tareas, text="Calcular", image=self.icono_calculadora,
+                                            command=self.abrir_calculadora, style="Boton.TButton")
         self.boton_calculadora.pack(pady=5, padx=10, side="right")
-
         # Información del sistema
         self.icono_info_sistema = self.resize_image("imagenes/interrogatorio.png")
         self.boton_info_sistema = ttk.Button(self.barra_tareas, image=self.icono_info_sistema, command=self.mostrar_info_sistema, style="Boton.TButton")
@@ -95,11 +97,10 @@ class Escritorio:
 
     #Abrir calculadora científica
     def abrir_calculadora(self):
-        # Lógica para abrir la calculadora científica en una nueva ventana
+        # Crea una nueva ventana Toplevel para la calculadora científica
         ventana_calculadora = tk.Toplevel(self.root)
-        ventana_calculadora.title("Calculadora Científica")
-        ventana_calculadora.geometry("400x600")  # Ajusta el tamaño según tus necesidades
-        ttk.Label(ventana_calculadora, text="Calculadora Científica", font=("Segoe UI", 12)).pack(pady=10)
+        # Instancia la calculadora científica pasando la nueva ventana como master
+        calculadora = CalculadoraCientifica(ventana_calculadora)
 
     def mostrar_info_sistema(self):
         # Información de la batería
