@@ -7,7 +7,7 @@ class VisualizadorImagenes:
     def __init__(self, master):
         self.master = master
         self.master.title("Visualizador de Imágenes")
-        self.master.geometry("800x600")
+        self.master.geometry("1280x720")
 
         self.lista_imagenes = []
         self.indice_actual = 0
