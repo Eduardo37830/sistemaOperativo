@@ -36,6 +36,9 @@ class Escritorio:
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
         self.barra_tareas.pack(side="bottom", fill="x", padx=10, pady=(0, 10))
 
+        # Centrar la barra de tareas horizontalmente
+        self.barra_tareas.place(relx=0.5, rely=1, anchor="s")
+
         # Botón de inicio con el logo redimensionado
         self.icono_inicio = self.resize_image("imagenes/logo.png")
         self.boton_inicio = ttk.Button(self.barra_tareas, image=self.icono_inicio, command=self.volver_inicio, style="Boton.TButton")
@@ -65,9 +68,6 @@ class Escritorio:
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
         self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", image=self.icono_salir, command=root.quit, style="Boton.TButton")
         self.boton_salir.pack(pady=5, padx=10, side="right")
-
-        # Centrar la barra de tareas horizontalmente
-        self.barra_tareas.place(relx=0.5, rely=1, anchor="s")
 
         # Fecha y hora
         self.label_hora = tk.Label(self.barra_tareas, text="", fg="black", bg="white", pady=10)

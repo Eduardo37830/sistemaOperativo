@@ -23,17 +23,25 @@ class VisualizadorVideos:
         self.panel_video = tk.Label(self.master)
         self.panel_video.pack()
 
-        boton_cargar = ttk.Button(self.master, text="Cargar Video", command=self.cargar_video)
-        boton_cargar.pack(side="bottom", fill="x")
+        # Barra de opciones
+        self.barra_opciones = tk.Frame(self.master, bg="#0078D7", height=40)
+        self.barra_opciones.pack(side="bottom", fill="x", padx=10, pady=(0, 10))
 
-        self.boton_reproducir = ttk.Button(self.master, text="Reproducir", command=self.iniciar_reproduccion)
-        self.boton_reproducir.pack(side="left", fill="y")
+        # Centrar botones horizontalmente
+        self.barra_opciones.place(relx=0.5, rely=1, anchor="s")
 
-        self.boton_pausar = ttk.Button(self.master, text="Pausa", command=self.pausar_reproduccion, state='disabled')  # Botón para pausar/reanudar
-        self.boton_pausar.pack(side="left", fill="y")
 
-        self.boton_detener = ttk.Button(self.master, text="Detener", command=self.detener_reproduccion, state='disabled')
-        self.boton_detener.pack(side="right", fill="y")
+        self.boton_cargar = ttk.Button(self.barra_opciones, text="Cargar Video", command=self.cargar_video)
+        self.boton_cargar.pack(pady=5, padx=10, side="left")
+
+        self.boton_reproducir = ttk.Button(self.barra_opciones, text="Reproducir", command=self.iniciar_reproduccion)
+        self.boton_reproducir.pack(pady=5, padx=10, side="left")
+
+        self.boton_pausar = ttk.Button(self.barra_opciones, text="Pausa", command=self.pausar_reproduccion, state='disabled')  # Botón para pausar/reanudar
+        self.boton_pausar.pack(pady=5, padx=10, side="left")
+
+        self.boton_detener = ttk.Button(self.barra_opciones, text="Detener", command=self.detener_reproduccion, state='disabled')
+        self.boton_detener.pack(pady=5, padx=10, side="left")
 
     def cargar_video(self):
         ruta_video = filedialog.askopenfilename(filetypes=[("Archivos de video", "*.mp4;*.avi;*.mov")])
