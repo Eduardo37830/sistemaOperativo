@@ -6,6 +6,8 @@ import psutil
 
 from modelos.calculadora import CalculadoraCientifica
 from modelos.administradorArchivos import AdministradorArchivos
+from modelos.visualizadorImagen import VisualizadorImagenes
+
 
 class Escritorio:
     def __init__(self, root):
@@ -39,7 +41,7 @@ class Escritorio:
         self.boton_inicio.pack(pady=5, padx=10, side="left")
 
         # Botón para seleccionar fondo de pantalla
-        self.icono_fondo = self.resize_image("imagenes/icono_wall.png")
+        self.icono_fondo = self.resize_image("imagenes/icono_wallpaper.png")
         self.boton_fondo = ttk.Button(self.barra_tareas, image=self.icono_fondo, command=self.seleccionar_fondo, style="Boton.TButton")
         self.boton_fondo.pack(pady=5, padx=10, side="left")
 
@@ -47,6 +49,12 @@ class Escritorio:
         self.icono_carpeta = self.resize_image("imagenes/icono_carpeta.png")
         self.boton_carpeta = ttk.Button(self.barra_tareas, image=self.icono_carpeta, command=self.abrir_administrador_archivos, style="Boton.TButton")
         self.boton_carpeta.pack(pady=5, padx=10, side="left")
+
+        # Botón para visualizar imágenes
+        self.icono_imagen = self.resize_image("imagenes/icono_wall.png")
+        self.boton_imagen = ttk.Button(self.barra_tareas, image=self.icono_imagen, command=self.abrir_imagen, style="Boton.TButton")
+        self.boton_imagen.pack(pady=5, padx=10, side="left")
+
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
@@ -113,6 +121,13 @@ class Escritorio:
         ventana_administrador = tk.Toplevel(self.root)
         # Instancia el administrador de archivos pasando la nueva ventana como master
         administrador = AdministradorArchivos(ventana_administrador)
+
+    def abrir_imagen(self):
+        # Crea una nueva ventana Toplevel para el administrador de archivos
+        ventana_imagen = tk.Toplevel(self.root)
+        # Instancia el administrador de archivos pasando la nueva ventana como master
+        visualizador = VisualizadorImagenes(ventana_imagen)
+
 
     def mostrar_info_sistema(self):
         # Información de la batería
