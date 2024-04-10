@@ -8,6 +8,7 @@ from modelos.calculadora import CalculadoraCientifica
 from modelos.administradorArchivos import AdministradorArchivos
 from modelos.visualizadorImagen import VisualizadorImagenes
 from modelos.visualizadorVideo import VisualizadorVideos
+from modelos.reproductorAudio import ReproductorAudio
 
 
 class Escritorio:
@@ -63,6 +64,11 @@ class Escritorio:
         self.icono_video = self.resize_image("imagenes/icono_video.png")
         self.boton_video = ttk.Button(self.barra_tareas, image=self.icono_video, command=self.abrir_video, style="Boton.TButton")
         self.boton_video.pack(pady=5, padx=10, side="left")
+
+        # Botón para reproducir audio
+        self.icono_audio = self.resize_image("imagenes/icono_musica.png")
+        self.boton_audio = ttk.Button(self.barra_tareas, image=self.icono_audio, command=self.abrir_audio, style="Boton.TButton")
+        self.boton_audio.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
@@ -136,10 +142,14 @@ class Escritorio:
     def abrir_video(self):
         # Crea una nueva ventana Toplevel para el visualizador de videos
         ventana_video = tk.Toplevel(self.root)
-        # Instancia el visualizador de imagen pasando la nueva ventana como master
+        # Instancia el visualizador de video pasando la nueva ventana como master
         VisualizadorVideos(ventana_video)
 
-
+    def abrir_audio(self):
+        # Crea una nueva ventana Toplevel para el visualizador de videos
+        ventana_audio = tk.Toplevel(self.root)
+        # Instancia el visualizador de video pasando la nueva ventana como master
+        ReproductorAudio(ventana_audio)
 
     def mostrar_info_sistema(self):
         # Información de la batería
