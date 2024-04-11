@@ -9,6 +9,7 @@ from modelos.administradorArchivos import AdministradorArchivos
 from modelos.visualizadorImagen import VisualizadorImagenes
 from modelos.visualizadorVideo import VisualizadorVideos
 from modelos.reproductorAudio import ReproductorAudio
+from modelos.editorTexto import EditorTexto
 
 
 class Escritorio:
@@ -69,6 +70,11 @@ class Escritorio:
         self.icono_audio = self.resize_image("imagenes/icono_musica.png")
         self.boton_audio = ttk.Button(self.barra_tareas, image=self.icono_audio, command=self.abrir_audio, style="Boton.TButton")
         self.boton_audio.pack(pady=5, padx=10, side="left")
+
+        # Botón para editar texto
+        self.icono_texto = self.resize_image("imagenes/icono_texto.png")
+        self.boton_texto = ttk.Button(self.barra_tareas, image=self.icono_texto, command=self.abrir_texto, style="Boton.TButton")
+        self.boton_texto.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
@@ -148,8 +154,14 @@ class Escritorio:
     def abrir_audio(self):
         # Crea una nueva ventana Toplevel para el visualizador de videos
         ventana_audio = tk.Toplevel(self.root)
-        # Instancia el visualizador de video pasando la nueva ventana como master
+        # Instancia el reproductor de audio pasando la nueva ventana como master
         ReproductorAudio(ventana_audio)
+
+    def abrir_texto(self):
+        # Crea una nueva ventana Toplevel para el editor de textos
+        ventana_texto = tk.Toplevel(self.root)
+        # Instancia el visualizador de video pasando la nueva ventana como master
+        EditorTexto(ventana_texto)
 
     def mostrar_info_sistema(self):
         # Información de la batería
@@ -170,7 +182,7 @@ class Escritorio:
         porcentaje_cpu = f"CPU: {psutil.cpu_percent()}% usado"
 
         #Uso de GPU
-        porcentaje_gpu = f"GPU: {psutil.gpu_percent(interval=1)}% usado"
+        porcentaje_gpu = f"GPU: {psutil.cpu_percent(interval=1)}% usado"
 
         # Mostrar la información
         mensaje = f"{porcentaje_bateria}\n{porcentaje_ram}\n{porcentaje_cpu}\n{porcentaje_gpu}"
