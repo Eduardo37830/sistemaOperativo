@@ -48,11 +48,13 @@ class VisualizadorImagenes:
         if self.lista_imagenes:
             self.indice_actual = (self.indice_actual + 1) % len(self.lista_imagenes)
             self.mostrar_imagen(self.indice_actual)
+            self.actualizar_botones_estado()
 
     def imagen_anterior(self):
         if self.lista_imagenes:
-            self.indice_actual = (self.indice_actual - 1) % len(self.lista_imagenes)
+            self.indice_actual = (self.indice_actual - 1 + len(self.lista_imagenes)) % len(self.lista_imagenes)
             self.mostrar_imagen(self.indice_actual)
+            self.actualizar_botones_estado()
 
     def actualizar_botones_estado(self):
         estado_anterior = "enabled" if self.lista_imagenes and self.indice_actual > 0 else "disabled"
