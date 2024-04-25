@@ -31,6 +31,9 @@ class IniciarSesion:
         self.boton_ingresar = ttk.Button(self.root, text="Ingresar", command=self.verificar_credenciales)
         self.boton_ingresar.pack(pady=10)
 
+        # Vincular tecla Enter a boton_ingresar
+        self.root.bind("<Return>", lambda event: self.verificar_credenciales())
+
     def verificar_credenciales(self):
         # Lógica para verificar las credenciales
         usuario = self.entry_usuario.get()
