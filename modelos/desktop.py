@@ -1,8 +1,10 @@
+import time
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 import datetime
 import psutil
+import threading
 
 from modelos.calculadora import CalculadoraCientifica
 from modelos.administradorArchivos import AdministradorArchivos
@@ -84,7 +86,10 @@ class Escritorio:
         # Fecha y hora
         self.label_hora = tk.Label(self.barra_tareas, text="", fg="black", bg="white", pady=10)
         self.label_hora.pack(side="right", padx=10)
-        self.actualizar_hora()
+        # Iniciar actualización de la hora en un hilo separado con threading
+        self.hilo_hora = threading.Thread(target=self.actualizar_hora)
+        self.hilo_hora.daemon = True  # El hilo daemon se cierra automáticamente cuando se cierra la aplicación
+        self.hilo_hora.start()
 
         # Calculadora científica
         self.icono_calculadora = self.resize_image("imagenes/icono_calculadora.png")
@@ -119,12 +124,12 @@ class Escritorio:
 
     #Cambiar la hora
     def actualizar_hora(self):
-        # Formato de hora y fecha que deseas mostrar
-        formato = "%Y-%m-%d %H:%M:%S"
-        ahora = datetime.datetime.now().strftime(formato)
-        self.label_hora.config(text=ahora)
-        # Llama a esta función nuevamente después de 1000 ms (1 segundo)
-        self.root.after(1000, self.actualizar_hora)
+        while True:
+            ahora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.label_hora.config(text=ahora)
+            self.label_hora.update_idletasks()  # Se asegura de que los cambios se muestren en la interfaz
+            time.sleep(1)  # Pausa de 1 segundo entre actualizaciones
+
 
     #Abrir calculadora científica
     def abrir_calculadora(self):
