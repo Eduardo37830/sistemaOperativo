@@ -82,6 +82,7 @@ class Escritorio:
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
         self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", image=self.icono_salir, command=root.quit, style="Boton.TButton")
         self.boton_salir.pack(pady=5, padx=10, side="right")
+        self.root.bind("<Escape>", lambda event: self.root.quit())
 
         # Fecha y hora
         self.label_hora = tk.Label(self.barra_tareas, text="", fg="black", bg="white", pady=10)
