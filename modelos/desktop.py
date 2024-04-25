@@ -170,26 +170,43 @@ class Escritorio:
         EditorTexto(ventana_texto)
 
     def mostrar_info_sistema(self):
-        # Información de la batería
-        if hasattr(psutil, "sensors_battery"):  # Verificar si el sistema soporta información de la batería
-            info_bateria = psutil.sensors_battery()
-            if info_bateria:
-                porcentaje_bateria = f"Batería: {info_bateria.percent}%"
+        # Crear una nueva ventana de nivel superior
+        self.ventana_info_sistema = tk.Toplevel(self.root)
+        self.ventana_info_sistema.title("Información del Sistema")
+
+        # Crear una etiqueta para mostrar la información del sistema
+        self.label_info_sistema = tk.Label(self.ventana_info_sistema, text="", justify="left")
+        self.label_info_sistema.pack()
+
+        # Crear e iniciar el hilo aquí
+        self.hilo_info_sistema = threading.Thread(target=self.actualizar_info_sistema)
+        self.hilo_info_sistema.daemon = True
+        self.hilo_info_sistema.start()
+
+    def actualizar_info_sistema(self):
+        while True:
+            # Información de la batería
+            if hasattr(psutil, "sensors_battery"):  # Verificar si el sistema soporta información de la batería
+                info_bateria = psutil.sensors_battery()
+                if info_bateria:
+                    porcentaje_bateria = f"Batería: {info_bateria.percent}%"
+                else:
+                    porcentaje_bateria = "Batería: No disponible"
             else:
-                porcentaje_bateria = "Batería: No disponible"
-        else:
-            porcentaje_bateria = "Batería: No soportado"
+                porcentaje_bateria = "Batería: No soportado"
 
-        # Uso de RAM
-        uso_ram = psutil.virtual_memory()
-        porcentaje_ram = f"RAM: {uso_ram.percent}% usado"
+            # Uso de RAM
+            uso_ram = psutil.virtual_memory()
+            porcentaje_ram = f"RAM: {uso_ram.percent}% usado"
 
-        # Uso de CPU
-        porcentaje_cpu = f"CPU: {psutil.cpu_percent()}% usado"
+            # Uso de CPU
+            porcentaje_cpu = f"CPU: {psutil.cpu_percent()}% usado"
 
-        #Uso de GPU
-        porcentaje_gpu = f"GPU: {psutil.cpu_percent(interval=1)}% usado"
+            # Uso de GPU
+            porcentaje_gpu = f"GPU: {psutil.cpu_percent(interval=1)}% usado"
 
-        # Mostrar la información
-        mensaje = f"{porcentaje_bateria}\n{porcentaje_ram}\n{porcentaje_cpu}\n{porcentaje_gpu}"
-        messagebox.showinfo("Información del Sistema", mensaje)
+            # Mostrar la información
+            mensaje = f"{porcentaje_bateria}\n{porcentaje_ram}\n{porcentaje_cpu}\n{porcentaje_gpu}"
+            self.label_info_sistema.config(text=mensaje)
+
+            time.sleep(1)  # Actualizar la información cada segundo
