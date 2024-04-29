@@ -116,8 +116,8 @@ class Escritorio:
     def volver_inicio(self):
         self.root.destroy()
         root = tk.Tk()
-        root.config(bg="#EDEDED")
-        Escritorio(root)
+        from modelos.login import IniciarSesion  # Importar aquí para evitar la importación circular
+        IniciarSesion(root)
         root.mainloop()
     #Cambiar el mataño de un ícono
     def resize_image(self, ruta):
