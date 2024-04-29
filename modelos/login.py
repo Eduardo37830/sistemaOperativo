@@ -1,10 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 from modelos.desktop import Escritorio
+from modelos.gestionUsuarios import GestorUsuarios
 class IniciarSesion:
     def __init__(self, root):
         self.root = root
+        self.gestor_usuarios = GestorUsuarios()
         self.root.title("Inicio de Sesión")
         self.root.geometry("1920x1080")
         self.root.state('zoomed')
@@ -34,18 +36,50 @@ class IniciarSesion:
         # Vincular tecla Enter a boton_ingresar
         self.root.bind("<Return>", lambda event: self.verificar_credenciales())
 
+        # Botón para registrar nuevo usuario
+        self.boton_registrar = ttk.Button(self.root, text="Registrar nuevo usuario", command=self.registrar_nuevo_usuario)
+        self.boton_registrar.pack(pady=10)
+
     def verificar_credenciales(self):
-        # Lógica para verificar las credenciales
         usuario = self.entry_usuario.get()
         contrasena = self.entry_contrasena.get()
-
-        # Ejemplo básico de verificación de credenciales
-        if usuario == "admin" and contrasena == "admin":
+        if self.gestor_usuarios.verificar_credenciales(usuario, contrasena):
             print("Inicio de sesión exitoso")
-            self.root.destroy()  # Cerrar la ventana de inicio de sesión
-            self.mostrar_escritorio()  # Mostrar el escritorio después del inicio de sesión exitoso
+            self.root.destroy()
+            self.mostrar_escritorio()
         else:
             print("Credenciales incorrectas")
+
+    def registrar_nuevo_usuario(self):
+        # Crear una nueva ventana Toplevel
+        self.ventana_registro = tk.Toplevel(self.root)
+        self.ventana_registro.title("Registro de Usuario")
+        self.ventana_registro.geometry("300x200")
+
+        # Etiquetas y campos de entrada para usuario y contraseña
+        tk.Label(self.ventana_registro, text="Usuario:").pack(pady=(10, 0))
+        self.entry_nuevo_usuario = ttk.Entry(self.ventana_registro)
+        self.entry_nuevo_usuario.pack()
+
+        tk.Label(self.ventana_registro, text="Contraseña:").pack(pady=5)
+        self.entry_nueva_contrasena = ttk.Entry(self.ventana_registro, show="*")
+        self.entry_nueva_contrasena.pack()
+
+        # Botón para confirmar el registro
+        ttk.Button(self.ventana_registro, text="Confirmar registro", command=self.confirmar_registro).pack(pady=15)
+
+    def confirmar_registro(self):
+        usuario = self.entry_nuevo_usuario.get()
+        contrasena = self.entry_nueva_contrasena.get()
+        print(usuario, contrasena)
+        if usuario and contrasena:
+            if self.gestor_usuarios.registrar_usuario(usuario, contrasena):
+                tk.messagebox.showinfo("Registro exitoso", "El usuario ha sido registrado exitosamente.")
+                self.ventana_registro.destroy()
+            else:
+                tk.messagebox.showerror("Error", "El nombre de usuario ya está en uso. Por favor, elige otro.")
+        else:
+            tk.messagebox.showerror("Error", "El nombre de usuario y la contraseña no pueden estar vacíos.")
 
     def mostrar_escritorio(self):
         root = tk.Tk()
