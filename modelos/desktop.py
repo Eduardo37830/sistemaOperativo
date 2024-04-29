@@ -15,8 +15,14 @@ from modelos.editorTexto import EditorTexto
 
 
 class Escritorio:
-    def __init__(self, root):
+
+    def __init__(self, root, controller):
         self.root = root
+        self.controller = controller
+        self.frame = tk.Frame(self.root)
+        self.setup_ui()
+
+    def setup_ui(self):
         self.root.title("Escritorio")
         self.root.geometry("1920x1080")
         self.root.state('zoomed')
@@ -45,42 +51,49 @@ class Escritorio:
 
         # Botón de inicio con el logo redimensionado
         self.icono_inicio = self.resize_image("imagenes/logo.png")
-        self.boton_inicio = ttk.Button(self.barra_tareas, image=self.icono_inicio, command=self.volver_inicio, style="Boton.TButton")
+        self.boton_inicio = ttk.Button(self.barra_tareas, image=self.icono_inicio, text="Volver al Inicio", command=self.controller.show_login)
         self.boton_inicio.pack(pady=5, padx=10, side="left")
 
         # Botón para seleccionar fondo de pantalla
         self.icono_fondo = self.resize_image("imagenes/icono_añadir-imagen.png")
-        self.boton_fondo = ttk.Button(self.barra_tareas, image=self.icono_fondo, command=self.seleccionar_fondo, style="Boton.TButton")
+        self.boton_fondo = ttk.Button(self.barra_tareas, image=self.icono_fondo, command=self.seleccionar_fondo,
+                                      style="Boton.TButton")
         self.boton_fondo.pack(pady=5, padx=10, side="left")
 
         # Botón para administrar archivos
         self.icono_carpeta = self.resize_image("imagenes/icono_carpeta.png")
-        self.boton_carpeta = ttk.Button(self.barra_tareas, image=self.icono_carpeta, command=self.abrir_administrador_archivos, style="Boton.TButton")
+        self.boton_carpeta = ttk.Button(self.barra_tareas, image=self.icono_carpeta,
+                                        command=self.abrir_administrador_archivos, style="Boton.TButton")
         self.boton_carpeta.pack(pady=5, padx=10, side="left")
 
         # Botón para visualizar imágenes
         self.icono_imagen = self.resize_image("imagenes/icono_imagen.png")
-        self.boton_imagen = ttk.Button(self.barra_tareas, image=self.icono_imagen, command=self.abrir_imagen, style="Boton.TButton")
+        self.boton_imagen = ttk.Button(self.barra_tareas, image=self.icono_imagen, command=self.abrir_imagen,
+                                       style="Boton.TButton")
         self.boton_imagen.pack(pady=5, padx=10, side="left")
 
         # Botón para visualizar videos
         self.icono_video = self.resize_image("imagenes/icono_video.png")
-        self.boton_video = ttk.Button(self.barra_tareas, image=self.icono_video, command=self.abrir_video, style="Boton.TButton")
+        self.boton_video = ttk.Button(self.barra_tareas, image=self.icono_video, command=self.abrir_video,
+                                      style="Boton.TButton")
         self.boton_video.pack(pady=5, padx=10, side="left")
 
         # Botón para reproducir audio
         self.icono_audio = self.resize_image("imagenes/icono_musica.png")
-        self.boton_audio = ttk.Button(self.barra_tareas, image=self.icono_audio, command=self.abrir_audio, style="Boton.TButton")
+        self.boton_audio = ttk.Button(self.barra_tareas, image=self.icono_audio, command=self.abrir_audio,
+                                      style="Boton.TButton")
         self.boton_audio.pack(pady=5, padx=10, side="left")
 
         # Botón para editar texto
         self.icono_texto = self.resize_image("imagenes/icono_texto.png")
-        self.boton_texto = ttk.Button(self.barra_tareas, image=self.icono_texto, command=self.abrir_texto, style="Boton.TButton")
+        self.boton_texto = ttk.Button(self.barra_tareas, image=self.icono_texto, command=self.abrir_texto,
+                                      style="Boton.TButton")
         self.boton_texto.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
-        self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", image=self.icono_salir, command=root.quit, style="Boton.TButton")
+        self.boton_salir = ttk.Button(self.barra_tareas, text="Salir", image=self.icono_salir, command=self.root.quit,
+                                      style="Boton.TButton")
         self.boton_salir.pack(pady=5, padx=10, side="right")
         self.root.bind("<Escape>", lambda event: self.root.quit())
 
@@ -99,7 +112,8 @@ class Escritorio:
         self.boton_calculadora.pack(pady=5, padx=10, side="right")
         # Información del sistema
         self.icono_info_sistema = self.resize_image("imagenes/interrogatorio.png")
-        self.boton_info_sistema = ttk.Button(self.barra_tareas, image=self.icono_info_sistema, command=self.mostrar_info_sistema, style="Boton.TButton")
+        self.boton_info_sistema = ttk.Button(self.barra_tareas, image=self.icono_info_sistema,
+                                             command=self.mostrar_info_sistema, style="Boton.TButton")
         self.boton_info_sistema.pack(pady=5, padx=10, side="left")
 
 
@@ -112,13 +126,6 @@ class Escritorio:
             self.label_fondo.configure(image=self.fondo)
 
 
-    #Ir a la pantalla de inicio
-    def volver_inicio(self):
-        self.root.destroy()
-        root = tk.Tk()
-        from modelos.login import IniciarSesion  # Importar aquí para evitar la importación circular
-        IniciarSesion(root)
-        root.mainloop()
     #Cambiar el mataño de un ícono
     def resize_image(self, ruta):
         return ImageTk.PhotoImage(Image.open(ruta).resize((30, 30)))
