@@ -48,7 +48,7 @@ class IniciarSesion:
             self.root.destroy()
             self.mostrar_escritorio()
         else:
-            print("Credenciales incorrectas")
+            tk.messagebox.showinfo("Error", "Credenciales incorrectas")
 
     def registrar_nuevo_usuario(self):
         # Crear una nueva ventana Toplevel
