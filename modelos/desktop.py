@@ -19,7 +19,10 @@ class Escritorio:
     def __init__(self, root, controller):
         self.root = root
         self.controller = controller
+        """self.frame = tk.Frame(self.root)"""
+        # Área de trabajo
         self.frame = tk.Frame(self.root)
+        self.frame.pack(expand=True, fill="both")
         self.setup_ui()
 
     def setup_ui(self):
@@ -32,14 +35,12 @@ class Escritorio:
         self.estilo.configure("Titulo.TLabel", font=("Segoe UI", 24), foreground="#FFFFFF")
         self.estilo.configure("Boton.TButton", font=("Segoe UI", 10))
 
-        # Área de trabajo
-        self.area_trabajo = tk.Frame(self.root)
-        self.area_trabajo.pack(expand=True, fill="both")
+
 
         # Configurar el fondo de pantalla inicial
         self.fondo = Image.open("imagenes/fondoRedimensionado.jpg")
         self.fondo = ImageTk.PhotoImage(self.fondo)
-        self.label_fondo = tk.Label(self.area_trabajo, image=self.fondo)
+        self.label_fondo = tk.Label(self.frame, image=self.fondo)
         self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Barra de tareas
