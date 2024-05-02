@@ -51,7 +51,6 @@ class IniciarSesion:
         usuario = self.entry_usuario.get()
         contrasena = self.entry_contrasena.get()
         if self.gestor_usuarios.verificar_credenciales(usuario, contrasena):
-            messagebox.showinfo("Inicio de sesión", "Inicio de sesión exitoso")
             self.controller.show_desktop()
         else:
             messagebox.showinfo("Error", "Credenciales incorrectas")

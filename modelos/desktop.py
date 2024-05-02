@@ -12,6 +12,7 @@ from modelos.visualizadorImagen import VisualizadorImagenes
 from modelos.visualizadorVideo import VisualizadorVideos
 from modelos.reproductorAudio import ReproductorAudio
 from modelos.editorTexto import EditorTexto
+from modelos.juego import JuegoCulebrita
 
 
 class Escritorio:
@@ -90,6 +91,12 @@ class Escritorio:
         self.boton_texto = ttk.Button(self.barra_tareas, image=self.icono_texto, command=self.abrir_texto,
                                       style="Boton.TButton")
         self.boton_texto.pack(pady=5, padx=10, side="left")
+
+        # Botón para jugar
+        self.icono_juego = self.resize_image("imagenes/serpiente.png")
+        self.boton_juego = ttk.Button(self.barra_tareas, image=self.icono_juego, text="Jugar", command=self.abrir_juego,
+                                        style="Boton.TButton")
+        self.boton_juego.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
         self.icono_salir = self.resize_image("imagenes/icono_salir.png")
@@ -176,6 +183,12 @@ class Escritorio:
         ventana_texto = tk.Toplevel(self.root)
         # Instancia el visualizador de video pasando la nueva ventana como master
         EditorTexto(ventana_texto)
+
+    def abrir_juego(self):
+        # Crea una nueva ventana Toplevel para el juego de la culebrita
+        ventana_juego = tk.Toplevel(self.root)
+        # Instancia el juego de la culebrita pasando la nueva ventana como master
+        JuegoCulebrita(ventana_juego, self.controller)
 
     def mostrar_info_sistema(self):
         # Crear una nueva ventana de nivel superior
