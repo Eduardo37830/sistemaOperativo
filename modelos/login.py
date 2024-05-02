@@ -52,6 +52,7 @@ class IniciarSesion:
         usuario = self.entry_usuario.get()
         contrasena = self.entry_contrasena.get()
         if self.gestor_usuarios.verificar_credenciales(usuario, contrasena):
+            self.controller.current_user = usuario # Almacena el usuario actual en el controlador
             self.controller.show_desktop()
         else:
             messagebox.showinfo("Error", "Credenciales incorrectas")

@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import datetime
 import psutil
 import threading
+import os
 
 from modelos.calculadora import CalculadoraCientifica
 from modelos.administradorArchivos import AdministradorArchivos
@@ -24,6 +25,7 @@ class Escritorio:
         # Área de trabajo
         self.frame = tk.Frame(self.root)
         self.frame.pack(expand=True, fill="both")
+        self.usuario = controller.current_user
         self.setup_ui()
 
     def setup_ui(self):
@@ -43,6 +45,17 @@ class Escritorio:
         self.fondo = ImageTk.PhotoImage(self.fondo)
         self.label_fondo = tk.Label(self.frame, image=self.fondo)
         self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Obtén la lista de carpetas en el directorio del usuario
+        ruta_base = os.path.join(os.getcwd(), "perfiles", self.usuario)
+        carpetas = [d for d in os.listdir(ruta_base) if os.path.isdir(os.path.join(ruta_base, d))]
+
+        self.icono_carpetaUsuario = self.resize_image("imagenes/carpetaUsuario.png")
+        # Crea un widget para cada carpeta
+        for carpeta in carpetas:
+            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta, command=lambda c=carpeta: self.abrir_carpeta(c), compound=tk.BOTTOM)
+            self.boton_carpetaUsuario.pack(pady=10, side="left")
+
 
         # Barra de tareas
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
@@ -231,3 +244,7 @@ class Escritorio:
             self.label_info_sistema.config(text=mensaje)
 
             time.sleep(1)  # Actualizar la información cada segundo
+
+    def abrir_carpeta(self, carpeta):
+        # Implementa este método para abrir la carpeta seleccionada
+        pass
