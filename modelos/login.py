@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 from modelos.gestionUsuarios import GestorUsuarios
@@ -76,8 +77,20 @@ class IniciarSesion:
         if usuario and contrasena:
             if self.gestor_usuarios.registrar_usuario(usuario, contrasena):
                 messagebox.showinfo("Registro exitoso", "El usuario ha sido registrado exitosamente.")
+                self.crear_estructura_directorios(usuario)  # Crea la estructura de directorios para el usuario
                 self.ventana_registro.destroy()
             else:
                 messagebox.showerror("Error", "El nombre de usuario ya está en uso. Por favor, elige otro.")
         else:
             messagebox.showerror("Error", "El nombre de usuario y la contraseña no pueden estar vacíos.")
+    def crear_estructura_directorios(self, usuario):
+        # Define la ruta base donde se crearán los directorios del usuario
+        ruta_base = os.path.join(os.getcwd(), "perfiles", usuario) # Se crea una carpeta con el nombre del usuario en Perfiles
+
+        print(ruta_base)
+
+        # Define los nombres de los directorios a crear
+        directorios = ["Documentos", "Escritorio", "Descargas", "Música", "Videos"]
+        # Crea cada directorio
+        for directorio in directorios:
+            os.makedirs(os.path.join(ruta_base, directorio), exist_ok=True)

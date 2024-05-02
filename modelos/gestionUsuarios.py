@@ -3,8 +3,9 @@ import os
 from hashlib import sha256
 
 class GestorUsuarios:
-    def __init__(self, archivo_usuarios='usuarios.json'):
+    def __init__(self, archivo_usuarios='perfiles/usuarios.json'):
         self.archivo_usuarios = archivo_usuarios
+        os.makedirs(os.path.dirname(self.archivo_usuarios), exist_ok=True)  # Crea la carpeta 'perfiles' si no existe
         self.usuarios = self.cargar_usuarios()
 
     def cargar_usuarios(self):
