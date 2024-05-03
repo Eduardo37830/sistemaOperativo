@@ -53,7 +53,7 @@ class Escritorio:
         self.icono_carpetaUsuario = self.resize_image("imagenes/carpetaUsuario.png")
         # Crea un widget para cada carpeta
         for carpeta in carpetas:
-            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta, command=lambda c=carpeta: self.abrir_carpeta(c), compound=tk.BOTTOM)
+            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta, command=lambda c=carpeta: self.abrir_administrador_archivos(c), compound=tk.BOTTOM)
             self.boton_carpetaUsuario.pack(pady=10, side="left")
 
 
@@ -167,11 +167,13 @@ class Escritorio:
         # Instancia la calculadora científica pasando la nueva ventana como master
         calculadora = CalculadoraCientifica(ventana_calculadora)
 
-    def abrir_administrador_archivos(self):
+    def abrir_administrador_archivos(self, carpeta):
         # Crea una nueva ventana Toplevel para el administrador de archivos
         ventana_administrador = tk.Toplevel(self.root)
-        # Instancia el administrador de archivos pasando la nueva ventana como master
-        administrador = AdministradorArchivos(ventana_administrador)
+        # Obtén la ruta de la carpeta que deseas mostrar
+        ruta_carpeta = os.path.join(os.getcwd(), "perfiles", self.usuario, carpeta)
+        # Instancia el administrador de archivos pasando la nueva ventana como master y la ruta de la carpeta
+        administrador = AdministradorArchivos(ventana_administrador, ruta_carpeta)
 
     def abrir_imagen(self):
         # Crea una nueva ventana Toplevel para el visualizador de imágenes
@@ -245,6 +247,6 @@ class Escritorio:
 
             time.sleep(1)  # Actualizar la información cada segundo
 
-    def abrir_carpeta(self, carpeta):
-        # Implementa este método para abrir la carpeta seleccionada
-        pass
+
+
+
