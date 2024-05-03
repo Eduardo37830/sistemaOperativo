@@ -52,9 +52,12 @@ class Escritorio:
 
         self.icono_carpetaUsuario = self.resize_image("imagenes/carpetaUsuario.png")
         # Crea un widget para cada carpeta
-        for carpeta in carpetas:
-            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta, command=lambda c=carpeta: self.abrir_administrador_archivos(c), compound=tk.BOTTOM)
-            self.boton_carpetaUsuario.pack(pady=10, side="left")
+        for i, carpeta in enumerate(carpetas):
+            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta,
+                                                   command=lambda c=carpeta: self.abrir_administrador_archivos(c),
+                                                   compound=tk.BOTTOM)
+            # Organiza los botones en una cuadrícula de 4 columnas
+            self.boton_carpetaUsuario.grid(row=i // 4, column=i % 4, pady=10, padx=5)
 
 
         # Barra de tareas
