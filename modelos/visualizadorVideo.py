@@ -10,6 +10,7 @@ class VisualizadorVideos:
         self.master = master
         self.master.title("Visualizador de Videos")
         self.master.geometry("1280x720")
+        self.master.state('zoomed')
 
         self.captura = None
         self.frame = None

@@ -21,7 +21,6 @@ class Escritorio:
     def __init__(self, root, controller):
         self.root = root
         self.controller = controller
-        """self.frame = tk.Frame(self.root)"""
         # Área de trabajo
         self.frame = tk.Frame(self.root)
         self.frame.pack(expand=True, fill="both")
@@ -38,8 +37,6 @@ class Escritorio:
         self.estilo.configure("Titulo.TLabel", font=("Segoe UI", 24), foreground="#FFFFFF")
         self.estilo.configure("Boton.TButton", font=("Segoe UI", 10))
 
-
-
         # Configurar el fondo de pantalla inicial
         self.fondo = Image.open("imagenes/fondoRedimensionado.jpg")
         self.fondo = ImageTk.PhotoImage(self.fondo)
@@ -53,12 +50,11 @@ class Escritorio:
         self.icono_carpetaUsuario = self.resize_image("imagenes/carpetaUsuario.png")
         # Crea un widget para cada carpeta
         for i, carpeta in enumerate(carpetas):
-            self.boton_carpetaUsuario = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta,
-                                                   command=lambda c=carpeta: self.abrir_administrador_archivos(c),
-                                                   compound=tk.BOTTOM)
+            boton_carpeta = ttk.Button(self.frame, image=self.icono_carpetaUsuario, text=carpeta,
+                                       command=lambda c=carpeta: self.abrir_administrador_archivos(c),
+                                       compound=tk.BOTTOM)
             # Organiza los botones en una cuadrícula de 4 columnas
-            self.boton_carpetaUsuario.grid(row=i // 4, column=i % 4, pady=10, padx=5)
-
+            boton_carpeta.grid(row=i // 4, column=i % 4, pady=10, padx=5)
 
         # Barra de tareas
         self.barra_tareas = tk.Frame(self.root, bg="#0078D7", height=40)
@@ -81,7 +77,7 @@ class Escritorio:
         # Botón para administrar archivos
         self.icono_carpeta = self.resize_image("imagenes/icono_carpeta.png")
         self.boton_carpeta = ttk.Button(self.barra_tareas, image=self.icono_carpeta,
-                                        command=self.abrir_administrador_archivos, style="Boton.TButton")
+                                        command=lambda: self.abrir_administrador_archivos(os.path.join(os.getcwd(), "perfiles", self.usuario)), style="Boton.TButton")
         self.boton_carpeta.pack(pady=5, padx=10, side="left")
 
         # Botón para visualizar imágenes
@@ -111,7 +107,7 @@ class Escritorio:
         # Botón para jugar
         self.icono_juego = self.resize_image("imagenes/serpiente.png")
         self.boton_juego = ttk.Button(self.barra_tareas, image=self.icono_juego, text="Jugar", command=self.abrir_juego,
-                                        style="Boton.TButton")
+                                      style="Boton.TButton")
         self.boton_juego.pack(pady=5, padx=10, side="left")
 
         # Botón para salir
@@ -140,8 +136,6 @@ class Escritorio:
                                              command=self.mostrar_info_sistema, style="Boton.TButton")
         self.boton_info_sistema.pack(pady=5, padx=10, side="left")
 
-
-
     def seleccionar_fondo(self):
         filename = filedialog.askopenfilename(filetypes=[("Archivos de imagen", "*.png;*.jpg;*.jpeg")])
         if filename:
@@ -149,12 +143,11 @@ class Escritorio:
             self.fondo = ImageTk.PhotoImage(self.fondo)
             self.label_fondo.configure(image=self.fondo)
 
-
-    #Cambiar el mataño de un ícono
+    # Cambiar el tamaño de un ícono
     def resize_image(self, ruta):
         return ImageTk.PhotoImage(Image.open(ruta).resize((30, 30)))
 
-    #Cambiar la hora
+    # Cambiar la hora
     def actualizar_hora(self):
         while True:
             ahora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -162,15 +155,18 @@ class Escritorio:
             self.label_hora.update_idletasks()  # Se asegura de que los cambios se muestren en la interfaz
             time.sleep(1)  # Pausa de 1 segundo entre actualizaciones
 
-
-    #Abrir calculadora científica
+    # Abrir calculadora científica
     def abrir_calculadora(self):
         # Crea una nueva ventana Toplevel para la calculadora científica
         ventana_calculadora = tk.Toplevel(self.root)
         # Instancia la calculadora científica pasando la nueva ventana como master
         calculadora = CalculadoraCientifica(ventana_calculadora)
 
-    def abrir_administrador_archivos(self, carpeta):
+    def abrir_administrador_archivos(self, carpeta=None):
+        if carpeta is None:
+            # Mensaje de error si no se proporciona una carpeta
+            messagebox.showerror("Error", "No se ha seleccionado ninguna carpeta.")
+            return
         # Crea una nueva ventana Toplevel para el administrador de archivos
         ventana_administrador = tk.Toplevel(self.root)
         # Obtén la ruta de la carpeta que deseas mostrar
@@ -250,6 +246,8 @@ class Escritorio:
 
             time.sleep(1)  # Actualizar la información cada segundo
 
-
-
-
+if __name__ == "__main__":
+    root = tk.Tk()
+    controller = None  # Necesitas pasar un controlador real aquí
+    app = Escritorio(root, controller)
+    root.mainloop()

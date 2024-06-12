@@ -6,7 +6,8 @@ class ReproductorAudio:
     def __init__(self, master):
         self.master = master
         self.master.title("Reproductor de Audio")
-        self.master.geometry("300x100")
+        self.master.geometry("1280x720")
+        self.master.state('zoomed')
 
         pygame.mixer.init()  # Inicializa el módulo mixer de pygame
 
